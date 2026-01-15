@@ -3,7 +3,7 @@
 use App\Models\Car;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
+// uses(RefreshDatabase::class);
 
 test('POST /api/cars creates a new car', function () {
     $carData = [
