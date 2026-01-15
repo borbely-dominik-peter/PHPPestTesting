@@ -1,10 +1,11 @@
 <?php
-// File names must end with Test
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 test('GET /api/cars exists', function () {
     $response = $this->get('/api/cars');
-
-})->throwsNoExceptions();
+    $response->assertStatus(200);
+});
 
 test('GET /api/cars returns with 200 status code', function () {
     $response = $this->get('/api/cars');
@@ -22,5 +23,3 @@ test('GET /api/cars returns data in a JSON array format', function () {
     $data = $response->json();
     expect($data)->toBeArray();
 });
-
-

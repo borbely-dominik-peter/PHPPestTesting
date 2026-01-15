@@ -21,24 +21,18 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        // $car = new Car();
-        // $car->Name = $request->Name;
-        // ...
-        // $car->save();
-
         $validated = $request->validate([
             'Name' => 'required|string|max:255',
-            'Cylinders' => 'numeric',
-            'Miles_per_Gallon' => 'numeric',
-            'Displacement' => 'nullable',
-            'Horsepower' => 'numeric',
+            'Cylinders' => 'nullable|numeric',
+            'Miles_per_Gallon' => 'nullable|numeric',
+            'Displacement' => 'nullable|numeric',
+            'Horsepower' => 'nullable|numeric',
             'Weight_in_lbs' => 'nullable|numeric',
-            'Acceleration' => 'numeric',
-            'Year' => 'date',
-            'Origin' => 'string'
+            'Acceleration' => 'nullable|numeric',
+            'Year' => 'nullable|date',
+            'Origin' => 'nullable|string'
         ]);
 
-        // $car = Car::create($request->all());  //Mass assignment
         $car = Car::create($validated);
 
         return response()->json($car, 201);
@@ -47,57 +41,53 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(Car $car) //route model binding
-    // {
-    //     return $car;
-    // }
-
-    // public function show($id)
-    // {
-    //     $car = Car::find($id);
-
-    //     if (!$car) {
-    //         return response()->json(['message' => 'No car found.'], 404);
-    //     }
-
-    //     return $car;
-    // }
-
     public function show($id)
     {
         $car = Car::findOrFail($id);
-        return $car;
+        return response()->json($car);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Car $car)
+    public function update(Request $request, $id)
     {
-        //TODO: Validation!!!!!
+        $car = Car::findOrFail($id);
 
-        $car->update($request->all());
+        $validated = $request->validate([
+            'Name' => 'sometimes|required|string|max:255',
+            'Cylinders' => 'nullable|numeric',
+            'Miles_per_Gallon' => 'nullable|numeric',
+            'Displacement' => 'nullable|numeric',
+            'Horsepower' => 'nullable|numeric',
+            'Weight_in_lbs' => 'nullable|numeric',
+            'Acceleration' => 'nullable|numeric',
+            'Year' => 'nullable|date',
+            'Origin' => 'nullable|string'
+        ]);
 
-        return $car;
+        $car->update($validated);
+
+        return response()->json($car);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Car $car)
+    public function destroy($id)
     {
-        if ($car->delete())
-        {
+        $car = Car::findOrFail($id);
+        
+        if ($car->delete()) {
             return response()->noContent();
         }
-        else {
-            return response()->json(['Message' => 'Something went wrong.'], 400);
-        }
+
+        return response()->json(['message' => 'Something went wrong.'], 400);
     }
 
     public function findByName($name) {
         $cars = Car::where('Name', 'like', '%'.$name.'%')->get();
-        if ($cars)
+        if ($cars->isNotEmpty())
         {
             return $cars;
         }
