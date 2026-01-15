@@ -17,7 +17,13 @@ test('GET /api/cars/car/{ID} calls the relevant controller, checked by data not 
 });
 
 test('GET /api/cars/car/{ID} returns data in a JSON array format', function () {
-    $response = $this->get('/api/cars/car/{ID}');
+    $response = $this->get('/api/cars/car/1');
+    $data = $response->json();
+    expect($data)->toBeArray();
+});
+
+test('GET /api/cars/car/{ID} returns 400 if ID is incorrect', function () {
+    $response = $this->get('/api/cars/car/99999999999999999');
     $data = $response->json();
     expect($data)->toBeArray();
 });
