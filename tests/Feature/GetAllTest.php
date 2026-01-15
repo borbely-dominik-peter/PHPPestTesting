@@ -2,8 +2,6 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
-
 test('GET /api/cars exists', function () {
     $response = $this->get('/api/cars');
     $response->assertStatus(200);
