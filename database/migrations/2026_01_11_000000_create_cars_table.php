@@ -21,7 +21,7 @@ return new class extends Migration
             $blueprint->double('Weight_in_lbs')->nullable();
             $blueprint->double('Acceleration')->nullable();
             $blueprint->date('Year')->nullable();
-            $blueprint->string('Origin')->nullable();
+            $blueprint->string('Origin')->nullable(false);
         });
     }
 
