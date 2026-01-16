@@ -16,3 +16,14 @@ test('non existent page returns 404', function () {
         ->assertStatus(404);
 });
 
+test('application name is accessible from config', function () {
+    expect(config('app.name'))->not->toBeNull();
+});
+
+test('homepage returns html content type', function () {
+    $this->get('/')
+        ->assertHeader('Content-Type', fn ($value) =>
+            str_contains($value, 'text/html')
+        );
+});
+
